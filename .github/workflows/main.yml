@@ -10,6 +10,7 @@ jobs:
 
     # Here we add the matrices definition:
     strategy:
+      fail-fast: false # Ensure in-progress/queued jobs are still executed if one job in matrix fails
       matrix:
         os: ["ubuntu-latest", "macos-latest", "windows-latest"]
         python-version: ["3.10", "3.11", "3.12"]
