@@ -20,6 +20,18 @@ class CSVDataSource:
         return list(data)
 
 
+class JSONDataSource:
+    def __init__(self, dir_path):
+        self.dir_path = dir_path
+
+    def load_json(self):
+        data_file_paths = glob.glob(os.path.join(self.dir_path, 'inflammation*.json'))
+        if len(data_file_paths) == 0:
+            raise ValueError(f"No inflammation JSON files found in path {self.dir_path}")
+        data = map(models.load_json, data_file_paths)
+        return list(data)
+
+
 def load_inflammation_data(data_dir):
     """Loads inflammation data from CSV files within the given directory.
 
