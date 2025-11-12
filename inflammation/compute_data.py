@@ -3,9 +3,8 @@
 
 import glob
 import os
-import numpy as np
 
-from inflammation import models, views
+from inflammation import models
 
 
 class CSVDataSource:
@@ -24,35 +23,9 @@ class JSONDataSource:
     def __init__(self, dir_path):
         self.dir_path = dir_path
 
-    def load_json(self):
+    def load_inflammation_data(self):
         data_file_paths = glob.glob(os.path.join(self.dir_path, 'inflammation*.json'))
         if len(data_file_paths) == 0:
             raise ValueError(f"No inflammation JSON files found in path {self.dir_path}")
         data = map(models.load_json, data_file_paths)
         return list(data)
-
-
-def analyse_data(data_source):
-    """Calculates the standard deviation by day between datasets.
-
-    Works out the mean inflammation value for each day across all datasets,
-    then plots the graphs of standard deviation of these means.
-    
-    :param data_dir: Directory that contains the inflammation CSV files.
-    """
-    data = data_source.load_inflammation_data()
-    daily_standard_deviation = compute_standard_deviation_by_day(data)
-
-    graph_data = {
-        'standard deviation by day': daily_standard_deviation,
-    }
-    # views.visualize(graph_data)
-    return daily_standard_deviation
-
-
-def compute_standard_deviation_by_day(data):
-    means_by_day = map(models.daily_mean, data)
-    means_by_day_matrix = np.stack(list(means_by_day))
-
-    daily_standard_deviation = np.std(means_by_day_matrix, axis=0)
-    return daily_standard_deviation
