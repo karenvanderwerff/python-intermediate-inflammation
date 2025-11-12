@@ -5,7 +5,7 @@ import argparse
 import os
 
 from inflammation import models, views
-from inflammation.compute_data import analyse_data, CSVDataSource, JSONDataSource
+from inflammation.compute_data import CSVDataSource, JSONDataSource
 
 
 def main(args):
@@ -29,8 +29,12 @@ def main(args):
         if '.csv' in extensions:
             data_source = CSVDataSource(os.path.dirname(InFiles[0]))
         else:
-            raise ValueError(f'Unsupported data file format: {extension}')
-        analyse_data(data_source)
+            raise ValueError(f'Unsupported data file format: {extensions}')
+        daily_standard_deviation = models.analyse_data(data_source)
+        graph_data = {
+            'standard deviation by day': daily_standard_deviation,
+        }
+        views.visualize(graph_data)
         return
 
     for filename in InFiles:
