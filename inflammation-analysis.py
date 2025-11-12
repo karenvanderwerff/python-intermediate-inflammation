@@ -15,23 +15,26 @@ def main(args):
     - selecting the necessary models and views for the current task
     - passing data between models and views
     """
-    infiles = args.infiles
-    if not isinstance(infiles, list):
-        infiles = [args.infiles]
+    InFiles = args.infiles
+    if not isinstance(InFiles, list):
+        InFiles = [args.infiles]
 
 
     if args.full_data_analysis:
-        _, extension = os.path.splitext(infiles[0])
-        if extension == '.json':
-            data_source = JSONDataSource(os.path.dirname(infiles[0]))
-        elif extension == '.csv':
-            data_source = CSVDataSource(os.path.dirname(infiles[0]))
+        extensions = {os.path.splitext(f)[1] for f in os.listdir(InFiles[0]) if os.path.isfile(os.path.join(InFiles[0], f))}
+        # _, extension = os.path.splitext(InFiles[0])
+        # if extension == '.json':
+        if '.json' in extensions:
+            data_source = JSONDataSource(os.path.dirname(InFiles[0]))
+        # elif extension == '.csv':
+        if '.csv' in extensions:
+            data_source = CSVDataSource(os.path.dirname(InFiles[0]))
         else:
             raise ValueError(f'Unsupported data file format: {extension}')
         analyse_data(data_source)
         return
 
-    for filename in infiles:
+    for filename in InFiles:
         inflammation_data = models.load_csv(filename)
 
         view_data = {
