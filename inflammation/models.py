@@ -106,3 +106,12 @@ def compute_standard_deviation_by_day(data):
 
     daily_standard_deviation = np.std(means_by_day_matrix, axis=0)
     return daily_standard_deviation
+
+def s_dev(data):
+    """Computes and returns standard deviation for data."""
+    mmm = np.mean(data, axis=0)
+    devs = []
+    for entry in data:
+        devs.append((entry - mmm) * (entry - mmm))
+        s_dev2 = sum(devs) / len(data)
+        return {'standard deviation': s_dev2}
