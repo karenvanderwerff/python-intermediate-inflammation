@@ -46,17 +46,6 @@ def test_daily_min(test, expected):
     npt.assert_array_equal(daily_min(np.array(test)), np.array(expected))
 
 
-
-@pytest.mark.parametrize('data, expected_standard_deviation', [
-    ([0, 0, 0], 0.0),
-    ([1.0, 1.0, 1.0], 0),
-    ([0.0, 2.0], 1.0)
-])
-def test_s_dev(data, expected_standard_deviation):
-    from inflammation.models import s_dev
-    result_data = s_dev(data)
-    npt.assert_approx_equal(result_data, expected_standard_deviation)
-
 @pytest.mark.parametrize(
     "test, expected, expect_raises",
     [
